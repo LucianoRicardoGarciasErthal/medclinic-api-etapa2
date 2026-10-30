@@ -8,6 +8,9 @@
     "build": "nest build",
     "migration:generate": "npm run build && typeorm migration:generate src/@common/database/migrations/migration -d dist/src/@common/database/cli-typeorm.js && npm run lint",
     "migration:new": "npm run build && typeorm migration:create src/@common/database/migrations/migration",
+    "migration:run": "npm run build && typeorm migration:run -d dist/src/@common/database/cli-typeorm.js",
+    "migration:revert": "npm run build && typeorm migration:revert -d dist/src/@common/database/cli-typeorm.js",
+    "seed:admin": "ts-node src/@common/database/seeds/create-admin.ts",
     "start": "nest start",
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
@@ -51,6 +54,7 @@
     "eslint-plugin-prettier": "^5.2.2",
     "jiti": "^2.7.0",
     "prettier": "^3.4.2",
+    "ts-node": "^10.9.2",
     "tsx": "^4.23.12",
     "typescript": "^6.0.3",
     "typescript-eslint": "^8.20.0",
@@ -59,5 +63,11 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "type": "commonjs"
+  "type": "commonjs",
+  "allowScripts": {
+    "argon2@0.45.1": true,
+    "bcrypt@6.0.0": true,
+    "esbuild@0.28.2": true,
+    "@scarf/scarf@1.4.0": true
+  }
 }
