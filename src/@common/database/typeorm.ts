@@ -4,6 +4,7 @@ import { ConfigService } from '@nestjs/config'
 import { DataSource } from 'typeorm'
 
 import { SnakeCaseNamingStrategy } from './snake-case-naming-pattern'
+import { Appointment } from '../../appointment/appointment.entity'
 import { Doctor } from '../../doctor/doctor.entity'
 import { WorkShift } from '../../doctor/work-shift.entity'
 import { APIEnv } from '../../env'
@@ -11,7 +12,7 @@ import { Patient } from '../../patient/patient.entity'
 import { Role } from '../../role/role.entity'
 import { User } from '../../user/user.entity'
 
-export const ENTITIES = [Role, User, Patient, Doctor, WorkShift]
+export const ENTITIES = [Role, User, Patient, Doctor, WorkShift, Appointment]
 
 export const databaseProvider: FactoryProvider = {
   provide: DataSource,
@@ -25,13 +26,7 @@ export const databaseProvider: FactoryProvider = {
       password: configService.getOrThrow('DB_PASSWORD'),
       database: configService.getOrThrow('DB_NAME'),
       poolSize: 10,
-      /**
-       * Só da pra utilizar em ambiente de desenvolvimento
-       */
       synchronize: configService.getOrThrow('DB_SYNCHRONIZE'),
-      /**
-       * export type LogLevel = "query" | "schema" | "error" | "warn" | "info" | "log" | "migration";
-       */
       logging: configService.getOrThrow('DB_LOG_LEVEL'),
       entities: ENTITIES,
       namingStrategy: new SnakeCaseNamingStrategy(),

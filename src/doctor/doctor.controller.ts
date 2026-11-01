@@ -1,8 +1,17 @@
-import { Controller, Get, Post, Body, Param, Put, ParseIntPipe } from '@nestjs/common'
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Param,
+  Put,
+  ParseIntPipe,
+} from '@nestjs/common'
+
 import { DoctorService } from './doctor.service'
-import { WorkScheduleService } from './work-schedule.service' // 👈 Importa o service da escala
 import { CreateDoctorDto } from './dto/create-doctor.dto'
 import { UpdateWorkScheduleDto } from './dto/update-work-schedule.dto' // 👈 Importa o DTO da escala
+import { WorkScheduleService } from './work-schedule.service' // 👈 Importa o service da escala
 import { RequireRole } from '../auth/decorator/role.decorator'
 
 @Controller('doctors')

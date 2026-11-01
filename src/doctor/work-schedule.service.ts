@@ -1,15 +1,18 @@
 import { Injectable } from '@nestjs/common'
 import { DataSource } from 'typeorm'
-import { WorkShift } from './work-shift.entity'
-import { UpdateWorkScheduleDto, ShiftDto } from './dto/update-work-schedule.dto'
+
 import { Doctor } from './doctor.entity'
+import { UpdateWorkScheduleDto, ShiftDto } from './dto/update-work-schedule.dto'
+import { WorkShift } from './work-shift.entity'
 
 @Injectable()
 export class WorkScheduleService {
   constructor(private readonly dataSource: DataSource) {}
 
   async replaceSchedule(doctorId: number, dto: UpdateWorkScheduleDto) {
-    const doctor = await this.dataSource.getRepository(Doctor).findOneBy({ id: doctorId })
+    const doctor = await this.dataSource
+      .getRepository(Doctor)
+      .findOneBy({ id: doctorId })
     if (!doctor) throw new Error('RECURSO_NAO_ENCONTRADO')
 
     this.validateOverlap(dto.shifts)
@@ -18,8 +21,15 @@ export class WorkScheduleService {
     return this.dataSource.transaction(async (manager) => {
       await manager.delete(WorkShift, { doctor: { id: doctorId } })
 
+      // 👇 CORREÇÃO AQUI: Passando as propriedades explicitamente
       const newShifts = dto.shifts.map((shift) =>
-        manager.create(WorkShift, { ...shift, doctor })
+        manager.create(WorkShift, {
+          weekDay: shift.weekDay,
+          startTime: shift.startTime,
+          endTime: shift.endTime,
+          slotDurationMinutes: shift.slotDurationMinutes,
+          doctor: doctor,
+        }),
       )
       await manager.save(newShifts)
 
@@ -28,7 +38,9 @@ export class WorkScheduleService {
   }
 
   async findByDoctor(doctorId: number) {
-    const doctor = await this.dataSource.getRepository(Doctor).findOneBy({ id: doctorId })
+    const doctor = await this.dataSource
+      .getRepository(Doctor)
+      .findOneBy({ id: doctorId })
     if (!doctor) throw new Error('RECURSO_NAO_ENCONTRADO')
 
     const shifts = await this.dataSource.getRepository(WorkShift).find({
