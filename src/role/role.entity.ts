@@ -13,6 +13,8 @@ import { User } from '../user/user.entity'
 
 export const RoleName = {
   ADMIN: 'admin',
+  SECRETARY: 'secretary', // 👈 ADICIONADO
+  DOCTOR: 'doctor', // 👈 ADICIONADO
   USER: 'user',
 } as const
 
