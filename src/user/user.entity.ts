@@ -23,8 +23,8 @@ export class User {
   @Column('varchar', { length: 255, unique: true })
   email: string
 
-  @Exclude() // 
-  @Column('varchar', { length: 255, select: false }) // 
+  @Exclude() //
+  @Column('varchar', { length: 255, select: false }) //
   password: string
 
   @JoinTable()
