@@ -5,12 +5,13 @@ import { DataSource } from 'typeorm'
 
 import { SnakeCaseNamingStrategy } from './snake-case-naming-pattern'
 import { Doctor } from '../../doctor/doctor.entity'
+import { WorkShift } from '../../doctor/work-shift.entity'
 import { APIEnv } from '../../env'
 import { Patient } from '../../patient/patient.entity'
 import { Role } from '../../role/role.entity'
 import { User } from '../../user/user.entity'
 
-export const ENTITIES = [Role, User, Patient, Doctor]
+export const ENTITIES = [Role, User, Patient, Doctor, WorkShift]
 
 export const databaseProvider: FactoryProvider = {
   provide: DataSource,
