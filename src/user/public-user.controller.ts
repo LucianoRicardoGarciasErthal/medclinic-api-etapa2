@@ -9,11 +9,10 @@ import { PublicRoute } from '../auth/decorator/public-route.decorator'
 export class PublicUserController {
   constructor(private readonly userService: UserService) {}
 
- @Post('login')
-async login(@Body() dto: LoginDto) {
-  const result = await this.userService.login(dto);
-  // ⚠️ Converte "jwt" para "accessToken" para atender ao contrato
-  return { accessToken: result.jwt };
-}
-
+  @Post('login')
+  async login(@Body() dto: LoginDto) {
+    const result = await this.userService.login(dto)
+    // ⚠️ Converte "jwt" para "accessToken" para atender ao contrato
+    return { accessToken: result.jwt }
+  }
 }
