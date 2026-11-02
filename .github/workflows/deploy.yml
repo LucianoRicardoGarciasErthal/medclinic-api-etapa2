@@ -12,8 +12,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-
       - uses: docker/setup-buildx-action@v3
+
+      # 👇 NOVO PASSO: TRANSFORMA O NOME EM MINÚSCULO
+      - name: Set lowercase repo name
+        run: |
+          echo "REPO_LOWER=$(echo ${{ github.repository }} | tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
 
       - name: Login to GitHub Container Registry
         uses: docker/login-action@v3
@@ -21,15 +25,15 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-          
+
       - name: Build and Push
         uses: docker/build-push-action@v6
         with:
           context: .
           push: true
           tags: |
-            ghcr.io/${{ github.repository }}:${{ github.sha }}
-            ghcr.io/${{ github.repository }}:latest
+            ghcr.io/${{ env.REPO_LOWER }}:${{ github.sha }}
+            ghcr.io/${{ env.REPO_LOWER }}:latest
       
       - name: Trigger deploy
-        run: curl --data-urlencode "imgURL=ghcr.io/${{ github.repository }}:${{ github.sha }}" "${{ secrets.RENDER_DEPLOY_URL }}"
+        run: curl --data-urlencode "imgURL=ghcr.io/${{ env.REPO_LOWER }}:${{ github.sha }}" "${{ secrets.RENDER_DEPLOY_URL }}"
