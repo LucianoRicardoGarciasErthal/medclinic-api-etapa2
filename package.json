@@ -12,6 +12,8 @@
     "migration:run": "npm run build && typeorm migration:run -d dist/src/@common/database/cli-typeorm.js",
     "migration:revert": "npm run build && typeorm migration:revert -d dist/src/@common/database/cli-typeorm.js",
     "seed:admin": "ts-node src/@common/database/seeds/create-admin.ts",
+    "migration:run:prod": "typeorm migration:run -d dist/src/@common/database/cli-typeorm.js",
+    "seed:admin:prod": "node dist/src/@common/database/seeds/create-admin.js",
     "start": "nest start",
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",

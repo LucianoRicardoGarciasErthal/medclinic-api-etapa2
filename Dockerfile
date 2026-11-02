@@ -28,4 +28,4 @@ COPY --from=builder /app/package-lock.json ./package-lock.json
 RUN npm ci --only=production
 
 # O comando que o container vai executar assim que ele for orquestrado
-CMD ["sh", "-c", "npm run migration:run && npm run seed:admin && node dist/src/main"]
+CMD ["sh", "-c", "npm run migration:run:prod && npm run seed:admin:prod && node dist/src/main"]
