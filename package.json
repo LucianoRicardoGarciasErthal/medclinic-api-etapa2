@@ -4,7 +4,8 @@
   "description": "NestJS Clinica é um projeto de back-end desenvolvido com o framework [NestJS](https://nestjs.com/).",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "vitest run",
+    "test:cov": "vitest run --coverage",
     "build": "nest build",
     "migration:generate": "npm run build && typeorm migration:generate src/@common/database/migrations/migration -d dist/src/@common/database/cli-typeorm.js && npm run lint",
     "migration:new": "npm run build && typeorm migration:create src/@common/database/migrations/migration",
@@ -48,6 +49,7 @@
     "@types/jsonwebtoken": "^9.0.10",
     "@types/node": "26.4.0",
     "@types/pg": "^8.23.1",
+    "@vitest/coverage-v8": "^4.1.11",
     "eslint": "^9.18.0",
     "eslint-config-prettier": "^10.0.1",
     "eslint-plugin-import": "^2.32.0",

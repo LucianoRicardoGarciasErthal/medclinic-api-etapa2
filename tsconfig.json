@@ -1,7 +1,7 @@
 {
   "$schema": "https://json.schemastore.org/tsconfig",
   "display": "Base",
-  "exclude": ["dist", "node_modules", "tests", "e2e"],
+  "exclude": ["node_modules", "dist", "**/*.spec.ts", "**/*.test.ts", "vitest.config.ts"],
   "compilerOptions": {
     "rootDir": ".",
     "outDir": "./dist",
