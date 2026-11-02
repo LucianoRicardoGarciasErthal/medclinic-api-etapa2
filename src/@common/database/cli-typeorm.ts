@@ -1,27 +1,20 @@
-import 'dotenv/config'
-import { DataSource, LoggerOptions } from 'typeorm'
+import 'dotenv/config'; // Garante que o .env será lido
+import { DataSource } from 'typeorm';
+import { SnakeCaseNamingStrategy } from './snake-case-naming-pattern';
+import { ENTITIES } from './typeorm'; // Reutiliza a lista de entidades
 
-import { SnakeCaseNamingStrategy } from './snake-case-naming-pattern'
-import { ENTITIES } from './typeorm'
-
-export const AppDataSource = new DataSource({
+export default new DataSource({
   type: 'postgres',
   host: process.env.DB_HOST,
-  port: Number(process.env.DB_PASSWORD ?? 5432),
+  port: Number(process.env.DB_PORT),
   username: process.env.DB_USER,
   password: process.env.DB_PASSWORD,
   database: process.env.DB_NAME,
-  poolSize: 10,
-  /**
-   * Só da pra utilizar em ambiente de desenvolvimento
-   */
-  synchronize: process.env.DB_SYNCHRONIZE?.toLowerCase() === 'true',
-  /**
-   * export type LogLevel = "query" | "schema" | "error" | "warn" | "info" | "log" | "migration";
-   */
-  logging: (process.env.DB_LOG_LEVEL ?? 'error') as LoggerOptions,
+  // ⚠️ A CORREÇÃO DO SSL AQUI TAMBÉM:
+  ssl: process.env.DB_SSL === 'true' ? { rejectUnauthorized: false } : false,
   entities: ENTITIES,
+  migrations: [__dirname + '/migrations/**/*{.ts,.js}'],
   namingStrategy: new SnakeCaseNamingStrategy(),
-  migrations: [__dirname + '/migrations/**/*{.js,.ts}'],
-  invalidWhereValuesBehavior: { undefined: 'ignore', null: 'sql-null' },
-})
+  synchronize: false,
+  logging: process.env.DB_LOG_LEVEL as any,
+});
