@@ -8,11 +8,21 @@ import { Appointment } from '../../appointment/appointment.entity'
 import { Doctor } from '../../doctor/doctor.entity'
 import { WorkShift } from '../../doctor/work-shift.entity'
 import { APIEnv } from '../../env'
+import { MedicalRecord } from '../../medical-record/medical-record.entity' // 👈 ADICIONADO
 import { Patient } from '../../patient/patient.entity'
 import { Role } from '../../role/role.entity'
 import { User } from '../../user/user.entity'
 
-export const ENTITIES = [Role, User, Patient, Doctor, WorkShift, Appointment]
+// 👈 MEDICALRECORD ADICIONADO NA LISTA
+export const ENTITIES = [
+  Role,
+  User,
+  Patient,
+  Doctor,
+  WorkShift,
+  Appointment,
+  MedicalRecord,
+]
 
 export const databaseProvider: FactoryProvider = {
   provide: DataSource,

@@ -77,12 +77,13 @@ export class JwtGuard implements CanActivate {
       throw new UnauthorizedException('Invalid token provided')
     }
 
+    // ⚠️ SALVA O USUÁRIO NO REQUEST ANTES DE VALIDAR AS ROLES
+    this.setPayload(context, payload)
+
     const requiredRoles = this.reflector.getAllAndOverride<
       RoleMetadata | undefined
     >(ROLES_METADATA_KEY, [
-      // É o método do controller que possui a anotação @Roles (se possuir, por isso pode retornar undefined)
       context.getHandler(),
-      // É a classe do controller que possui a anotação @Roles (se possuir, por isso pode retornar undefined)
       context.getClass(),
     ])
 
@@ -96,7 +97,6 @@ export class JwtGuard implements CanActivate {
             'You do not have access to this resource',
           )
         }
-
         return true
       }
 
@@ -106,11 +106,8 @@ export class JwtGuard implements CanActivate {
       if (!hasSome) {
         throw new ForbiddenException('You do not have access to this resource')
       }
-
-      return true
     }
 
-    this.setPayload(context, payload)
     return true
   }
 }

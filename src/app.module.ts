@@ -9,8 +9,10 @@ import { JwtGuard } from './auth/jwt.guard'
 import { DoctorModule } from './doctor/doctor.module'
 import { validateEnv } from './env'
 import { HealthController } from './health.controller'
+import { MedicalRecordModule } from './medical-record/medical-record.module'
 import { PatientModule } from './patient/patient.module'
 import { UserModule } from './user/user.module'
+
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -23,6 +25,7 @@ import { UserModule } from './user/user.module'
     PatientModule,
     DoctorModule,
     AppointmentModule,
+    MedicalRecordModule,
   ],
   controllers: [HealthController],
   providers: [
