@@ -1,4 +1,5 @@
 name: Build and Deploy
+
 on:
   push:
     branches: [main]
@@ -14,7 +15,6 @@ jobs:
       - uses: actions/checkout@v4
       - uses: docker/setup-buildx-action@v3
 
-      # 👇 NOVO PASSO: TRANSFORMA O NOME EM MINÚSCULO
       - name: Set lowercase repo name
         run: |
           echo "REPO_LOWER=$(echo ${{ github.repository }} | tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
@@ -34,6 +34,10 @@ jobs:
           tags: |
             ghcr.io/${{ env.REPO_LOWER }}:${{ github.sha }}
             ghcr.io/${{ env.REPO_LOWER }}:latest
-      
+
+      # 👇 A CORREÇÃO ESTÁ AQUI: o passo só roda se o segredo existir
       - name: Trigger deploy
-        run: curl --data-urlencode "imgURL=ghcr.io/${{ env.REPO_LOWER }}:${{ github.sha }}" "${{ secrets.RENDER_DEPLOY_URL }}"
+        env:
+          RENDER_HOOK: ${{ secrets.RENDER_DEPLOY_URL }}
+        if: env.RENDER_HOOK != ''
+        run: curl --data-urlencode "imgURL=ghcr.io/${{ env.REPO_LOWER }}:${{ github.sha }}" "$RENDER_HOOK"
